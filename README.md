@@ -38,9 +38,9 @@ Overview
 In this assignment, you won't be using local server, you will be the using this endpoint: 
 
 ```javascript
-{
+
   https://notes-60by.onrender.com
-}
+
 ```
 
 Here are all the endpoints you need to complete this project:
