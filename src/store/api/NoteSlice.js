@@ -1,19 +1,36 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import BASE_URL from './BaseUrl'
+import Cookies from 'js-cookie'
+
+const getToken = () => {
+   return Cookies.get('token')
+}
 
 export const noteApi = createApi({
     reducerPath: 'noteApi',
-    baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:9000' }),
-    tagTypes: ['Note'],
+    baseQuery: fetchBaseQuery({
+         baseUrl: BASE_URL ,
+        prepareHeaders: (headers) => {
+            const token = getToken()
+            if(token) {
+              headers.set('Authorization', `Bearer ${token}`)  
+            }
+            return headers
+        }
+        
+        }),
+        tagTypes: ['Note'],
+    
     endpoints: (builder) => ({
         getNotes: builder.query({
             query: () => '/notes',
             providesTags: ['Note'],
         }),
         addNote: builder.mutation({
-            query: (body) => ({
+            query: (newNote) => ({
                 url: 'create_note',
                 method: 'POST',
-                body,
+                body: newNote
             }),
             invalidatesTags: ['Note'],
         }),
